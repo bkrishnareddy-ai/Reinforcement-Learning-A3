@@ -1,0 +1,21 @@
+# --- Core Atari Environment ---
+gym==0.26.2
+ale-py==0.7.5
+autorom[accept-rom-license]
+
+# --- Deep Learning (Used in DQN) ---
+torch==2.2.2
+numpy==1.26.4
+
+# --- Visualization & Progress ---
+matplotlib==3.8.0
+tqdm==4.66.1
+
+# --- Frame Processing ---
+opencv-python==4.9.0.80
+Pillow==10.2.0
+
+# --- Notebook Support ---
+jupyter==1.0.0
+notebook==7.0.6
+ipykernel==6.29.0
