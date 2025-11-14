@@ -1,0 +1,45 @@
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.dqn-pong/
+.dqn/
+.dqn-env/
+dqn-pong/
+.dqn-pong-env/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE configs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build / distribution
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+
+# Results & generated files
+results/
+plots/
+*.png
+*.jpg
+
+# AutoROM downloaded ROMs
+roms/
+*.bin
+*.rom
