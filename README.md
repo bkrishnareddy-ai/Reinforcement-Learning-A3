@@ -1,3 +1,4 @@
+
 # 📘 Deep Q-Network (DQN) for Atari Pong  
 **Course:** CSCN8020 – Reinforcement Learning Programming  
 **Student:** *Krishna Reddy Bovilla*  
@@ -10,23 +11,27 @@ GitHub: **https://github.com/bkrishnareddy-ai/Reinforcement-Learning-A3.git**
 
 ---
 
-## 📝 Project Description
+# 📝 Project Description
 
-This project implements a **Deep Q-Network (DQN)** agent capable of learning to play **Atari Pong** from **raw pixel input** using reinforcement learning.  
-The implementation faithfully follows the original DeepMind DQN design, including:
+This project implements a **Deep Q-Network (DQN)** agent trained to play **Atari PongDeterministic-v4**.  
+The agent learns directly from **raw pixel input**, using key DeepMind DQN components:
 
+- Convolutional Deep Q-Network  
 - Experience Replay  
-- Target Network  
-- Convolutional Q-Network  
-- Frame Preprocessing (Grayscale → Resize → Normalize)  
-- Frame Stacking for temporal representation  
-- ε-Greedy Exploration Strategy  
+- Target Network (periodically updated)  
+- 4-Frame Stacking (temporal state information)  
+- Frame Preprocessing (grayscale → resize → normalize)  
+- ε-Greedy Exploration  
 
-The project also includes **three controlled hyperparameter experiments** and a **full training analysis**, complete with plots and commentary.
+The project also includes three controlled experiments analyzing how **batch size** and **target network update frequency** affect learning performance.
 
 ---
 
 # 🛠️ Installation & Environment Setup
+
+Follow the steps below to set up the correct environment for running Atari Pong with DQN.
+
+---
 
 ## 1️⃣ Clone the Repository
 ```bash
@@ -44,43 +49,55 @@ conda create -n dqn-pong python=3.10 -y
 conda activate dqn-pong
 ```
 
-### ✔ Using venv
+### ✔ Using Python venv
 ```bash
 python -m venv dqn-pong
-source dqn-pong/bin/activate   # Mac/Linux
-dqn-pong\Scripts\activate    # Windows
+source dqn-pong/bin/activate     # Mac/Linux
+dqn-pong\Scripts\activate      # Windows
 ```
 
 ---
 
-## 3️⃣ Install Dependencies
+# 3️⃣ Install Dependencies
 
-### Required Python Packages
+You can install dependencies using **either Method A (manual)** or **Method B (`requirements.txt`)**.
+
+---
+
+## 📌 Method A — Manual Installation (Recommended)
+
+### Install core Atari packages:
 ```bash
 pip install -q gym==0.26.2
 pip install -q ale-py==0.7.5
 pip install -q "autorom[accept-rom-license]"
-AutoROM --accept-license
-pip install torch numpy matplotlib tqdm
 ```
 
-After installation, **AutoROM must be run** to download and install Atari ROMs.
+### Install Atari ROMs:
+```bash
+AutoROM --accept-license
+```
+
+### Install PyTorch + supporting packages:
+```bash
+pip install torch numpy matplotlib tqdm opencv-python Pillow
+```
 
 ---
 
-# ▶️ Running the Notebook
+## 📌 Method B — Install Everything Using `requirements.txt`
 
-Launch Jupyter and open the main notebook:
-
+Run:
 ```bash
-jupyter notebook
+pip install -r requirements.txt
 ```
 
-Open:
+Then install ROMs:
+```bash
+AutoROM --accept-license
+```
 
-```
-assignment3.ipynb
-```
+⚠️ **AutoROM must be run at least once** or Pong will not load.
 
 ---
 
@@ -89,88 +106,87 @@ assignment3.ipynb
 ```
 Reinforcement-Learning-A3/
 │
-├── assignment3_utils.py          # Frame preprocessing functions
-├── assignment3.ipynb    # Main notebook with full pipeline
-├── requirements.txt                    # Required libraries
+├── assignment3_utils.py          # Frame preprocessing utilities
+├── assignment3.ipynb    # Full training & experiments notebook
+├── requirements.txt              # Package requirements
+├── .gitignore                    # Ignored files
 ├── README.md                     # Documentation
-└── report.pdf                    # Final assignment report (optional)
+└── report.pdf                    # (Optional) Full written report
 ```
 
 ---
 
-# 🧠 Model Architecture (DeepMind DQN)
+# 🧠 Deep Q-Network Architecture
 
-### Input  
+### 🔹 Input
 - 4 stacked grayscale frames (84 × 80)
 
-### Convolutional Feature Extractor  
+### 🔹 Convolutional Layers
 | Layer | Filters | Kernel | Stride | Activation |
 |-------|----------|-----------|------------|--------------|
 | Conv1 | 32 | 8×8 | 4 | ReLU |
 | Conv2 | 64 | 4×4 | 2 | ReLU |
 | Conv3 | 64 | 3×3 | 1 | ReLU |
 
-### Fully Connected  
-- FC1: 512 units (ReLU)  
-- Output: 6 Q-values representing Pong actions  
+### 🔹 Fully Connected
+- FC1: 512 units  
+- Output: 6 Q-values  
 
-This architecture mirrors the original Deep Q-Network used by DeepMind.
-
----
-
-# 🧪 Experimental Configurations
-
-Three training configurations were tested for 100 episodes each:
-
-| Experiment | Batch Size | Target Update |
-|------------|-------------|----------------|
-| **Baseline** | 8 | Every 10 episodes |
-| **Batch Size 16** | 16 | Every 10 episodes |
-| **Target Update 3** | 8 | Every 3 episodes |
+This architecture matches the original DeepMind DQN design.
 
 ---
 
-# 📊 Visualization & Analysis
+# 🧪 Experiments Performed
+
+Three configurations were tested for 100 episodes:
+
+| Experiment | Batch Size | Target Update Rate |
+|------------|-------------|----------------------|
+| **Baseline** | 8 | 10 episodes |
+| **Batch Size 16** | 16 | 10 episodes |
+| **Target Update 3** | 8 | 3 episodes |
+
+All results were plotted and analyzed.
+
+---
+
+# 📊 Training Results & Plots
 
 The notebook generates:
 
-### ➤ Individual Plots
-- Score per episode  
-- Moving average of last 5 episodes  
+### ✔ Score per episode  
+### ✔ 5-episode moving average  
+### ✔ Combined score comparison  
+### ✔ Combined moving-average comparison  
 
-### ➤ Combined Comparison Plots
-- Baseline vs. Batch 16 vs. Target Update 3 (score)
-- Baseline vs. Batch 16 vs. Target Update 3 (moving average)
-
-These help illustrate how hyperparameters affect learning.
+These visualizations allow evaluating stability and performance of each configuration.
 
 ---
 
-# 🏁 Summary of Findings
+# 🏁 Key Findings
 
-### 🔹 Best Configuration  
-✔ **Batch size: 8**  
-✔ **Target update: 10**  
+✔ **Best Configuration:**  
+- **Batch Size = 8**  
+- **Target Update = 10 episodes**
 
-### 🔹 Why It Works Best
-- Most stable reward behaviour  
-- Preserves gradient sensitivity  
-- Avoids oversmoothing from large batches  
-- Avoids instability from overly frequent target updates  
-
-### 🔹 Other Findings
-- **Batch size 16** slowed learning  
-- **Target update 3** caused unnecessary oscillations  
+❌ Larger batch size (16) → Slower learning  
+❌ Very frequent target updates (3) → More oscillations, no improvement  
 
 ---
 
+# 📚 References
+
+- Mnih et al., *Playing Atari with Deep Reinforcement Learning*  
+- Arcade Learning Environment  
+- OpenAI Gym Atari  
+- PyTorch Documentation  
+
+---
 
 # 🙌 Acknowledgements
-
-This project was developed for **CSCN8020 – Reinforcement Learning Programming**,  
+Developed as part of **CSCN8020 – Reinforcement Learning Programming**,  
 Mohawk College.
 
 ---
 
 # 🎉 End of README
-
